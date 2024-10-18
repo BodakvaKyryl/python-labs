@@ -1,7 +1,25 @@
+import os
 import tkinter as tk
 from tkinter import messagebox
 from urllib.parse import urlparse
-import os
+
+def change_theme():
+    if root["bg"] == light_bg:
+        root.config(bg=dark_root_bg)
+        general_info_label.config(bg=dark_bg, fg=dark_fg)
+        task_label.config(bg=dark_bg, fg=dark_fg)
+        entry_url.config(bg=dark_entry_bg, fg=dark_fg, insertbackground=dark_fg)
+        result_label.config(bg=dark_bg, fg=dark_fg)
+        analyze_button.config(bg=dark_button_bg, fg=dark_button_fg)
+        theme_button.config(bg=dark_button_bg, fg=dark_button_fg, text="Light Mode")
+    else:
+        root.config(bg=light_bg)
+        general_info_label.config(bg=light_bg, fg=light_fg)
+        task_label.config(bg=light_bg, fg=light_fg)
+        entry_url.config(bg=light_entry_bg, fg=light_fg, insertbackground=light_fg)
+        result_label.config(bg=light_bg, fg=light_fg)
+        analyze_button.config(bg=light_button_bg, fg=light_button_fg)
+        theme_button.config(bg=light_button_bg, fg=light_button_fg, text="Dark Mode")
 
 def analyze_url():
     url = entry_url.get()
@@ -45,25 +63,58 @@ def analyze_url():
     except Exception as e:
         messagebox.showerror("Error", f"Invalid URL or Error: {e}")
 
-r = tk.Tk()
-r.title('URL Analyzer')
-r.geometry('500x400')
+def enable_paste(event):
+    entry_url.event_generate('<<Paste>>')
 
-studentInfo = tk.Label(r, text="Student K.I. Bodakva\nKPI, PZKS")
-studentInfo.pack()
+light_bg = "#ffffff"
+light_fg = "#000000"
+light_entry_bg = "#f0f0f0"
+light_button_bg = "#d0d0d0"
+light_button_fg = "#000000"
+dark_root_bg = "#2c2c2c"
+dark_bg = "#3D3D3D"
+dark_fg = "#ffffff"
+dark_entry_bg = "#3d3d3d"
+dark_button_bg = "#444444"
+dark_button_fg = "#ffffff"
 
-label_url = tk.Label(r, text="Enter the URL:")
-label_url.pack()
-entry_url = tk.Entry(r, width=50)
-entry_url.pack()
+root = tk.Tk()
+root.geometry("1000x300")
+root.title("URL Analyzer")
+root.config(bg=dark_root_bg)
 
-button_analyze = tk.Button(r, text='Analyze URL', width=20, command=analyze_url)
-button_analyze.pack()
+general_info = '''
+Інформація про автора ПЗ:
+ВНЗ: "Київський політехнічний інститут імені Ігоря Сікорського"
+Кафедра: Програмного забезпечення комп'ютерних систем
+Факультет: Факультет прикладної математики
+група: КП-11
+ПІБ: Бодаква Кирил
+Опис ПЗ:
+URL analyzer
+'''
+general_info_label = tk.Label(root, text=general_info, font=("Arial", 10),
+justify="left", bg=dark_bg, fg=dark_fg)
+general_info_label.grid(row=0, column=0, rowspan=3, sticky="nsew", padx=10, pady=10)
 
-button_exit = tk.Button(r, text='Exit', width=9, command=r.destroy)
-button_exit.pack()
+task_label = tk.Label(root, text="Enter a URL:", font=("Arial", 12), bg=dark_bg, fg=dark_fg)
+task_label.grid(row=0, column=1, sticky="nsew", padx=10, pady=10)
 
-result_label = tk.Label(r, text="")
-result_label.pack()
+entry_url = tk.Entry(root, width=50, font=("Arial", 12), justify="center", bg=dark_entry_bg, fg=dark_fg)
+entry_url.grid(row=1, column=1, sticky="nsew", padx=10, pady=5)
+entry_url.bind('<Control-v>', enable_paste)
 
-r.mainloop()
+analyze_button = tk.Button(root, text="Analyze URL", font=("Arial", 12), command=analyze_url, bg=dark_button_bg, fg=dark_button_fg)
+analyze_button.grid(row=2, column=1, sticky="nsew", padx=10, pady=5)
+
+theme_button = tk.Button(root, text="Light Mode", font=("Arial", 12), command=change_theme, bg=dark_button_bg, fg=dark_button_fg)
+theme_button.grid(row=2, column=0, sticky="nsew", padx=10, pady=5)
+
+result_label = tk.Label(root, text="", font=("Arial", 12), bg=dark_bg, fg=dark_fg)
+result_label.grid(row=3, column=1, sticky="nsew", padx=10, pady=5)
+
+root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(1, weight=1)
+root.grid_rowconfigure([0, 1, 2, 3], weight=1)
+
+root.mainloop()
