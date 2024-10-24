@@ -1,0 +1,5 @@
+John Doe <john.doe@gmail.com>,
+Jane Smith <jane.smith@yahoo.com>,
+Michael Brown <michael.brown@outlook.com>,
+Emily Davis <emily.davis@icloud.com>,
+David Wilson <david.wilson@hotmail.com>
